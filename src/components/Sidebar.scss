@@ -3,4 +3,13 @@
 .sidebar {
   background-color: $storm;
   width: 340px;
+
+  li {
+    padding: 12px 20px;
+  }
+
+  &__active {
+    color: $white;
+    background-color: $heroine;
+  }
 }

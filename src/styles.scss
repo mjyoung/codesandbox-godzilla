@@ -1,9 +1,30 @@
+@import 'colors';
+
 html,
 body {
   font-family: Open Sans;
+  font-size: 14px;
 }
 
 .app {
   height: calc(100vh - 56px); // subtract Header height
+  width: 100vw;
   flex-direction: column;
+}
+pre {
+  padding: 12px;
+  background-color: $storm;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 1.2em;
+  margin-bottom: 12px;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: 1.1em;
 }

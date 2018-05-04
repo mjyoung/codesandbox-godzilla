@@ -20,9 +20,9 @@ class MainContent extends Component {
   addField = () => {
     const newState = _.cloneDeep(this.state.appDefinition);
     newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields.push({
-      key: '',
-      label: '',
-      helpText: '',
+      key: 'new-field',
+      label: 'New Field',
+      helpText: 'New field help text',
       dropdown: false,
     });
     this.setState({

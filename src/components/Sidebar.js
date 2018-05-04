@@ -8,7 +8,7 @@ const Sidebar = () => (
     <ul>
       <li>Authentication</li>
       <li>Resources</li>
-      <li>Triggers</li>
+      <li className="sidebar__active">Triggers</li>
       <li>New Issue Trigger</li>
       <li>Create Actions</li>
       <li>Update Actions</li>

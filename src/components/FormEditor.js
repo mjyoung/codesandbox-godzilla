@@ -14,7 +14,7 @@ const FormEditor = props => {
 
   const editorToRender = inputFields.map((field, index) => {
     return (
-      <div style={{ margin: '20px' }} key={index}>
+      <div className="form-editor__item" key={index}>
         <h4>Key</h4>
         <input
           type="text"
@@ -52,7 +52,13 @@ const FormEditor = props => {
     );
   });
 
-  return <div className="form-editor">{editorToRender}</div>;
+  return (
+    <div className="form-editor" tabIndex={0}>
+      <h3>Form Editor</h3>
+      {editorToRender}
+      <button onClick={onAddField}>Add a field</button>
+    </div>
+  );
 };
 
 export default FormEditor;
