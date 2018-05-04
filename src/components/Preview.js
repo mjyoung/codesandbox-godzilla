@@ -7,9 +7,9 @@ const Preview = props => {
 
   const previewToRender = inputFields.map((field, index) => {
     return (
-      <div style={{ margin: '20px' }} key={index}>
+      <div className="preview__item" key={index}>
         <h3>{field.label}</h3>
-        <div>{field.helpText}</div>
+        <div className="preview__help-text">{field.helpText}</div>
         {!field.dropdown && <input type="text" />}
         {field.dropdown && (
           <select style={{ width: '200px' }}>
@@ -31,6 +31,7 @@ const Preview = props => {
 
   return (
     <div className="preview">
+      <h3 style={{ textAlign: 'center' }}>Preview</h3>
       {previewToRender}
       {definition}
     </div>
