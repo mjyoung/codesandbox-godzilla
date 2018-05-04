@@ -1,482 +1,780 @@
 export default {
-  title: 'Sample App',
-  description: 'A really cool example app.',
-  image:
-    'https://cdn.zapier.com/storage/developer/57b336375384ab62cc06e7e83d5c3622_2.128x128.png',
-  repo: 'sample-app',
-  version: '1.0.0',
+  afterResponse: [],
   authentication: {
-    type: 'apiToken',
-    url: 'https://example.com/recipe',
-    method: 'GET',
-    headers: {
-      'X-API-Token': '{{authData.apiToken}}',
-    },
-    inputFields: [
+    connectionLabel: '{{bundle.inputData.userPrincipalName}}',
+    fields: [
       {
-        key: 'apiToken',
-        label: 'API Token',
-        type: 'string',
+        choices: {
+          business: 'Business - Work or School',
+          personal: 'Personal - live.com/outlook.com',
+        },
+        default: 'personal',
+        key: 'accountType',
+        label: 'Account Type',
         required: true,
-        helpText:
-          'Your API Token can be found in [https://example.com/settings](your settings).',
       },
     ],
+    oauth2Config: {
+      authorizeUrl: '$func$2$f$',
+      autoRefresh: true,
+      getAccessToken: '$func$2$f$',
+      refreshAccessToken: '$func$2$f$',
+      scope: 'User.Read Files.ReadWrite.All offline_access',
+    },
+    test: '$func$1$f$',
+    type: 'oauth2',
   },
-  dropdowns: [
-    {
-      key: 'cuisine',
-      url: 'https://example.com/cuisine',
-      method: 'GET',
-      headers: {
-        'X-API-Token': '{{authData.apiToken}}',
+  beforeRequest: ['$func$3$f$'],
+  creates: {
+    fileCreate: {
+      display: {
+        description: 'Upload an existing file or attachment.',
+        important: true,
+        label: 'Upload File',
       },
-      sample: {
-        id: 1,
-        name: 'Italian',
-      },
-    },
-  ],
-  triggers: [
-    {
-      key: 'recipe',
-      type: 'polling',
-      label: 'New Recipe',
-      noun: 'Recipe',
-      description: 'Triggers on a new recipe.',
-      url: 'https://example.com/recipe',
-      method: 'GET',
-      params: [
-        {
-          key: 'cuisine',
-          value: '{{inputData.cuisine}}',
-          sendWhenEmpty: false,
-        },
-      ],
-      headers: {
-        'X-API-Token': '{{authData.apiToken}}',
-      },
-      inputFields: [
-        {
-          key: 'cuisine',
-          label: 'Cuisine',
-          type: 'number',
-          required: false,
-          dropdown: 'cuisine.id.name',
-          helpText: 'Type of cuisine to trigger on.',
-        },
-        {
-          key: 'cookingTime',
-          label: 'Cooking Time',
-          required: false,
-          helpText: 'Trigger on cook time.',
-        },
-      ],
-      sample: {
-        id: 1,
-        name: 'Spaghetti',
-        custom_123: 'Boil water. Add pasta.',
-        custom_321: '10-15 minutes.',
-      },
-      outputFields: [
-        {
-          key: 'custom_123',
-          label: 'Directions',
-          type: 'string',
-        },
-        {
-          // Would get label for custom_321
-          type: 'request',
-          url: 'https://example.com/recipe-output-fields',
-          method: 'GET',
-          headers: {
-            'X-API-Token': '{{authData.apiToken}}',
-          },
-        },
-      ],
-      important: true,
-      paging: false,
-      hidden: false,
-    },
-    {
-      key: 'rating',
-      type: 'hook',
-      label: 'New Rating',
-      noun: 'Rating',
-      description: 'Triggers on a new recipe rating.',
-      subscribe: {
-        url: 'https://example.com/rating-hooks',
-        method: 'POST',
-        body: {
-          event: 'new',
-        },
-        headers: {
-          'X-API-Token': '{{authData.apiToken}}',
-        },
-      },
-      unsubscribe: {
-        url: 'https://example.com/rating-hooks/{{inputData.hook.id}}',
-        method: 'DELETE',
-        headers: {
-          'X-API-Token': '{{authData.apiToken}}',
-        },
-      },
-      url: 'https://example.com/rating',
-      method: 'GET',
-      headers: {
-        'X-API-Token': '{{authData.apiToken}}',
-      },
-      sample: {
-        id: 1,
-        recipe: 1,
-        rating: 5,
-      },
-      important: true,
-      // "paging": false, // We wouldn't need this here because the polling is only for test data
-      hidden: false,
-    },
-  ],
-  creates: [
-    {
-      key: 'recipe',
-      label: 'Create Recipe',
-      noun: 'Recipe',
-      description: 'Creates a new recipe.',
-      url: 'https://example.com/recipe',
-      method: 'POST',
-      headers: {
-        'X-API-Token': '{{authData.apiToken}}',
-      },
-      inputFields: [
-        {
-          key: 'cuisine',
-          label: 'Cuisine',
-          type: 'number',
-          required: true,
-          dropdown: 'cuisine.id.name',
-        },
-        {
-          key: 'name',
-          label: 'Name',
-          type: 'string',
-          required: true,
-        },
-        {
-          key: 'custom_123',
-          label: 'Directions',
-          type: 'string',
-          required: true,
-        },
-        {
-          // Would get custom_321
-          type: 'request',
-          url: 'https://example.com/recipe-input-fields',
-          method: 'GET',
-          headers: {
-            'X-API-Token': '{{authData.apiToken}}',
-          },
-        },
-      ],
-      sample: {
-        id: 1,
-        name: 'Spaghetti',
-        custom_123: 'Boil water. Add pasta.',
-        custom_321: '10-15 minutes.',
-      },
-      outputFields: [
-        {
-          key: 'custom_123',
-          label: 'Directions',
-          type: 'string',
-        },
-        {
-          // Would get label for custom_321
-          type: 'request',
-          url: 'https://example.com/recipe-output-fields',
-          method: 'GET',
-          headers: {
-            'X-API-Token': '{{authData.apiToken}}',
-          },
-        },
-      ],
-      sendAsForm: false,
-      important: true,
-      hidden: false,
-    },
-    {
-      key: 'rating',
-      label: 'Create Rating',
-      noun: 'Rating',
-      description: 'Creates a new rating for a recipe.',
-      url: 'https://example.com/rating',
-      method: 'POST',
-      params: [
-        {
-          key: 'format',
-          value: 'form',
-          sendWhenEmpty: true,
-        },
-      ],
-      headers: {
-        'X-API-Token': '{{authData.apiToken}}',
-      },
-      inputFields: [
-        {
-          key: 'recipe',
-          label: 'Recipe',
-          type: 'number',
-          required: true,
-          dropdown: 'recipe.id.name',
-          search: 'recipe.id',
-        },
-        {
-          key: 'rating',
-          label: 'Rating',
-          type: 'number',
-          required: true,
-          dropdown: [
-            {
-              label: '1',
-              value: 1,
-            },
-            {
-              label: '2',
-              value: 2,
-            },
-            {
-              label: '3',
-              value: 3,
-            },
-            {
-              label: '4',
-              value: 4,
-            },
-            {
-              label: '5',
-              value: 5,
-            },
-          ],
-        },
-      ],
-      sample: {
-        id: 1,
-        recipe: 1,
-        rating: 5,
-      },
-      sendAsForm: true,
-      important: true,
-      hidden: false,
-    },
-  ],
-  searches: [
-    {
-      key: 'recipe',
-      label: 'Find Recipe',
-      noun: 'Recipe',
-      description: 'Finds a recipe.',
-      url: 'https://example.com/recipe/search',
-      method: 'GET',
-      params: [
-        {
-          key: 'name',
-          value: '{{inputData.name}}',
-          sendWhenEmpty: false,
-        },
-        {
-          key: 'cuisine',
-          value: '{{inputData.cuisine}}',
-          sendWhenEmpty: false,
-        },
-      ],
-      headers: {
-        'X-API-Token': '{{authData.apiToken}}',
-      },
-      inputFields: [
-        {
-          key: 'cuisine',
-          label: 'Cuisine',
-          type: 'number',
-          required: false,
-          dropdown: 'cuisine.id.name',
-        },
-        {
-          key: 'name',
-          label: 'Name',
-          type: 'string',
-          required: false,
-        },
-      ],
-      sample: {
-        id: 1,
-        name: 'Spaghetti',
-        custom_123: 'Boil water. Add pasta.',
-        custom_321: '10-15 minutes.',
-      },
-      outputFields: [
-        {
-          key: 'custom_123',
-          label: 'Directions',
-          type: 'string',
-        },
-        {
-          // Would get label for custom_321
-          type: 'request',
-          url: 'https://example.com/recipe-output-fields',
-          method: 'GET',
-          headers: {
-            'X-API-Token': '{{authData.apiToken}}',
-          },
-        },
-      ],
-      important: true,
-      hidden: false,
-    },
-  ],
-  searchOrCreates: [
-    {
-      key: 'recipe',
-      label: 'Find or Create Recipe',
-      noun: 'Recipe',
-      // "description": "Finds a recipe. Alternatively, create one if not found.", // We automatically populate these, but shouldn't we allow a customized message?
-      search: 'recipe',
-      create: 'recipe',
-      resource: {
-        url: 'https://example.com/recipe/{{inputData.id}}',
-        method: 'GET',
-        headers: {
-          'X-API-Token': '{{authData.apiToken}}',
-        },
-      },
-      // "important": false, // We ignore these here and use the search.important instead
-      hidden: false,
-    },
-  ],
-  resources: [
-    {
-      key: 'cook',
-      noun: 'Cook',
-      get: {
-        url: 'https://example.com/cook/{{inputData.id}}',
-        method: 'GET',
-        headers: {
-          'X-API-Token': '{{authData.apiToken}}',
-        },
+      key: 'fileCreate',
+      noun: 'File',
+      operation: {
         inputFields: [
+          {
+            dynamic: 'folderList._path.name',
+            helpText:
+              'Folder where to place the file. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+            key: 'folder',
+            label: 'Folder',
+            required: false,
+            type: 'string',
+          },
+          {
+            helpText:
+              'Must be a file object from another service (or some text or URL).',
+            key: 'file',
+            label: 'File',
+            required: true,
+            type: 'file',
+          },
+          {
+            helpText:
+              'By default, we use the same name and extension as the original file.',
+            key: 'name',
+            label: 'File Name',
+            required: false,
+            type: 'string',
+          },
+        ],
+        outputFields: [
           {
             key: 'id',
             label: 'ID',
-            type: 'number',
-            required: true,
           },
-        ],
-      },
-      list: {
-        type: 'polling',
-        label: 'New Cook',
-        description: 'Triggers on a new cook.',
-        url: 'https://example.com/cook',
-        method: 'GET',
-        params: [
           {
-            key: 'cuisine',
-            value: '{{inputData.cuisine}}',
-            sendWhenEmpty: false,
+            key: 'name',
+            label: 'File Name',
+          },
+          {
+            key: '_path',
+            label: 'File Path',
+          },
+          {
+            key: '_parent',
+            label: 'Folder',
+          },
+          {
+            key: 'webUrl',
+            label: 'URL',
+          },
+          {
+            key: '@microsoft.graph.downloadUrl',
+            label: 'Download URL',
           },
         ],
-        headers: {
-          'X-API-Token': '{{authData.apiToken}}',
+        perform: '$func$2$f$',
+        performGet: '$func$0$f$',
+        resource: 'file',
+        sample: {
+          '@microsoft.graph.downloadUrl': 'http://example.com',
+          _parent: '/Something',
+          _path: '/Something/Example.jpg',
+          createdDateTime: '2016-09-16T03:37:04.72Z',
+          id: '1',
+          lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+          name: 'Example.jpg',
+          webUrl: 'http://example.com',
         },
+      },
+    },
+    folderCreate: {
+      display: {
+        description: 'Creates a new folder.',
+        important: true,
+        label: 'Create Folder',
+      },
+      key: 'folderCreate',
+      noun: 'Folder',
+      operation: {
         inputFields: [
           {
-            key: 'cuisine',
-            label: 'Cuisine',
-            type: 'number',
+            dynamic: 'folderList._path.name',
+            helpText:
+              'Folder where to create the folder. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+            key: 'folder',
+            label: 'Folder',
             required: false,
-            dropdown: 'cuisine.id.name',
-            helpText: "Type of cook's cuisine to trigger on.",
+            type: 'string',
+          },
+          {
+            key: 'name',
+            required: true,
+            type: 'string',
           },
         ],
+        outputFields: [
+          {
+            key: 'id',
+            label: 'ID',
+          },
+          {
+            key: 'name',
+            label: 'Folder Name',
+          },
+          {
+            key: '_path',
+            label: 'Folder Path',
+          },
+          {
+            key: '_parent',
+            label: 'Parent Folder',
+          },
+          {
+            key: 'webUrl',
+            label: 'URL',
+          },
+        ],
+        perform: '$func$2$f$',
+        performGet: '$func$0$f$',
+        resource: 'folder',
+        sample: {
+          _parent: '/Something',
+          _path: '/Something/Example',
+          createdDateTime: '2016-09-16T03:37:04.72Z',
+          id: '1',
+          lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+          name: 'Example',
+          webUrl: 'http://example.com',
+        },
       },
+    },
+    textFile: {
+      display: {
+        description:
+          'Creates a brand new text file from plain text content you specify.',
+        important: true,
+        label: 'Create New Text File',
+      },
+      key: 'textFile',
+      noun: 'Text File',
+      operation: {
+        inputFields: [
+          {
+            dynamic: 'folderList._path.name',
+            helpText:
+              'Folder where to place the file. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+            key: 'folder',
+            label: 'Folder',
+            required: false,
+            type: 'string',
+          },
+          {
+            helpText: 'Plain text content to put inside the new text file.',
+            key: 'file',
+            label: 'File',
+            required: true,
+            type: 'text',
+          },
+          {
+            helpText:
+              'Specify the name of this file. ".txt" will always be appended.',
+            key: 'name',
+            label: 'Name of New File',
+            required: true,
+            type: 'string',
+          },
+        ],
+        outputFields: [
+          {
+            key: 'id',
+            label: 'ID',
+          },
+          {
+            key: 'name',
+            label: 'File Name',
+          },
+          {
+            key: '_path',
+            label: 'File Path',
+          },
+          {
+            key: '_parent',
+            label: 'Folder',
+          },
+          {
+            key: 'webUrl',
+            label: 'URL',
+          },
+          {
+            key: '@microsoft.graph.downloadUrl',
+            label: 'Download URL',
+          },
+        ],
+        perform: '$func$2$f$',
+        sample: {
+          '@microsoft.graph.downloadUrl': 'http://example.com',
+          _parent: '/Something',
+          _path: '/Something/Example.jpg',
+          createdDateTime: '2016-09-16T03:37:04.72Z',
+          id: '1',
+          lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+          name: 'Example.jpg',
+          webUrl: 'http://example.com',
+        },
+      },
+    },
+  },
+  hydrators: {
+    getFileContents: '$func$2$f$',
+  },
+  platformVersion: '2.1.0',
+  resources: {
+    file: {
       create: {
-        label: 'Create Cook',
-        description: 'Creates a new cook.',
-        url: 'https://example.com/cook',
-        method: 'POST',
-        body: {
-          cook: {
-            cuisine: '{{inputData.cuisine}}',
-            name: '{{inputData.name}}',
-          },
+        display: {
+          description: 'Upload an existing file or attachment.',
+          important: true,
+          label: 'Upload File',
         },
-        headers: {
-          'X-API-Token': '{{authData.apiToken}}',
+        operation: {
+          inputFields: [
+            {
+              dynamic: 'folderList._path.name',
+              helpText:
+                'Folder where to place the file. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+              key: 'folder',
+              label: 'Folder',
+              required: false,
+              type: 'string',
+            },
+            {
+              helpText:
+                'Must be a file object from another service (or some text or URL).',
+              key: 'file',
+              label: 'File',
+              required: true,
+              type: 'file',
+            },
+            {
+              helpText:
+                'By default, we use the same name and extension as the original file.',
+              key: 'name',
+              label: 'File Name',
+              required: false,
+              type: 'string',
+            },
+          ],
+          perform: '$func$2$f$',
         },
-        inputFields: [
-          {
-            key: 'cuisine',
-            label: 'Cuisine',
-            type: 'number',
-            required: true,
-            dropdown: 'cuisine.id.name',
-          },
-          {
-            key: 'name',
-            label: 'Name',
-            type: 'string',
-            required: true,
-          },
-        ],
-        sendAsForm: false,
       },
-      search: {
-        label: 'Find Cook',
-        description: 'Finds a cook.',
-        url: 'https://example.com/cook/search',
-        method: 'GET',
-        params: [
-          {
-            key: 'name',
-            value: '{{inputData.name}}',
-            sendWhenEmpty: false,
-          },
-          {
-            key: 'cuisine',
-            value: '{{inputData.cuisine}}',
-            sendWhenEmpty: false,
-          },
-        ],
-        headers: {
-          'X-API-Token': '{{authData.apiToken}}',
+      get: {
+        display: {
+          description: 'Gets a file.',
+          label: 'Get File',
         },
-        inputFields: [
-          {
-            key: 'cuisine',
-            label: 'Cuisine',
-            type: 'number',
-            required: false,
-            dropdown: 'cuisine.id.name',
-          },
-          {
-            key: 'name',
-            label: 'Name',
-            type: 'string',
-            required: false,
-          },
-        ],
+        operation: {
+          inputFields: [
+            {
+              key: 'id',
+              required: true,
+            },
+          ],
+          perform: '$func$0$f$',
+        },
       },
-      sample: {
-        id: 1,
-        name: 'Giovanno Staropi',
-        cuisine: 1,
-        rating: 5,
+      key: 'file',
+      list: {
+        display: {
+          description: 'Triggers when a new file is added in a folder.',
+          important: true,
+          label: 'New File',
+        },
+        operation: {
+          inputFields: [
+            {
+              dynamic: 'folderList._path.name',
+              helpText:
+                'Folder where to look for the file. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+              key: 'folder',
+              label: 'Folder',
+              required: false,
+              type: 'string',
+            },
+          ],
+          perform: '$func$0$f$',
+        },
       },
+      noun: 'File',
       outputFields: [
         {
-          key: 'rating',
-          label: 'Average Rating',
-          type: 'number',
+          key: 'id',
+          label: 'ID',
+        },
+        {
+          key: 'name',
+          label: 'File Name',
+        },
+        {
+          key: '_path',
+          label: 'File Path',
+        },
+        {
+          key: '_parent',
+          label: 'Folder',
+        },
+        {
+          key: 'webUrl',
+          label: 'URL',
+        },
+        {
+          key: '@microsoft.graph.downloadUrl',
+          label: 'Download URL',
         },
       ],
+      sample: {
+        '@microsoft.graph.downloadUrl': 'http://example.com',
+        _parent: '/Something',
+        _path: '/Something/Example.jpg',
+        createdDateTime: '2016-09-16T03:37:04.72Z',
+        id: '1',
+        lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+        name: 'Example.jpg',
+        webUrl: 'http://example.com',
+      },
+      search: {
+        display: {
+          description: 'Finds a file by name.',
+          important: true,
+          label: 'Find File',
+        },
+        operation: {
+          inputFields: [
+            {
+              dynamic: 'folderList._path.name',
+              helpText:
+                'Folder where to look for the file. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+              key: 'folder',
+              label: 'Folder',
+              required: false,
+              type: 'string',
+            },
+            {
+              key: 'name',
+              required: true,
+              type: 'string',
+            },
+          ],
+          perform: '$func$0$f$',
+        },
+      },
     },
-  ],
+    folder: {
+      create: {
+        display: {
+          description: 'Creates a new folder.',
+          important: true,
+          label: 'Create Folder',
+        },
+        operation: {
+          inputFields: [
+            {
+              dynamic: 'folderList._path.name',
+              helpText:
+                'Folder where to create the folder. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+              key: 'folder',
+              label: 'Folder',
+              required: false,
+              type: 'string',
+            },
+            {
+              key: 'name',
+              required: true,
+              type: 'string',
+            },
+          ],
+          perform: '$func$2$f$',
+        },
+      },
+      get: {
+        display: {
+          description: 'Gets a folder.',
+          label: 'Get Folder',
+        },
+        operation: {
+          inputFields: [
+            {
+              key: 'id',
+              required: true,
+            },
+          ],
+          perform: '$func$0$f$',
+        },
+      },
+      key: 'folder',
+      list: {
+        display: {
+          description: 'Triggers when a new folder is added.',
+          important: true,
+          label: 'New Folder',
+        },
+        operation: {
+          inputFields: [
+            {
+              dynamic: 'folderList._path.name',
+              helpText:
+                'Folder where to look for the folder. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+              key: 'folder',
+              label: 'Folder',
+              required: false,
+              type: 'string',
+            },
+          ],
+          perform: '$func$2$f$',
+        },
+      },
+      noun: 'Folder',
+      outputFields: [
+        {
+          key: 'id',
+          label: 'ID',
+        },
+        {
+          key: 'name',
+          label: 'Folder Name',
+        },
+        {
+          key: '_path',
+          label: 'Folder Path',
+        },
+        {
+          key: '_parent',
+          label: 'Parent Folder',
+        },
+        {
+          key: 'webUrl',
+          label: 'URL',
+        },
+      ],
+      sample: {
+        _parent: '/Something',
+        _path: '/Something/Example',
+        createdDateTime: '2016-09-16T03:37:04.72Z',
+        id: '1',
+        lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+        name: 'Example',
+        webUrl: 'http://example.com',
+      },
+      search: {
+        display: {
+          description: 'Finds a folder by name.',
+          important: true,
+          label: 'Find Folder',
+        },
+        operation: {
+          inputFields: [
+            {
+              dynamic: 'folderList._path.name',
+              helpText:
+                'Folder where to look for the folder. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+              key: 'folder',
+              label: 'Folder',
+              required: false,
+              type: 'string',
+            },
+            {
+              key: 'name',
+              required: true,
+              type: 'string',
+            },
+          ],
+          perform: '$func$0$f$',
+        },
+      },
+    },
+  },
+  searchOrCreates: {
+    fileSearch: {
+      create: 'fileCreate',
+      display: {
+        description: 'Finds a file by name.',
+        label: 'Find or Create File',
+      },
+      key: 'fileSearch',
+      search: 'fileSearch',
+    },
+    folderSearch: {
+      create: 'folderCreate',
+      display: {
+        description: 'Finds a folder by name.',
+        label: 'Find or Create Folder',
+      },
+      key: 'folderSearch',
+      search: 'folderSearch',
+    },
+  },
+  searches: {
+    fileSearch: {
+      display: {
+        description: 'Finds a file by name.',
+        important: true,
+        label: 'Find File',
+      },
+      key: 'fileSearch',
+      noun: 'File',
+      operation: {
+        inputFields: [
+          {
+            dynamic: 'folderList._path.name',
+            helpText:
+              'Folder where to look for the file. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+            key: 'folder',
+            label: 'Folder',
+            required: false,
+            type: 'string',
+          },
+          {
+            key: 'name',
+            required: true,
+            type: 'string',
+          },
+        ],
+        outputFields: [
+          {
+            key: 'id',
+            label: 'ID',
+          },
+          {
+            key: 'name',
+            label: 'File Name',
+          },
+          {
+            key: '_path',
+            label: 'File Path',
+          },
+          {
+            key: '_parent',
+            label: 'Folder',
+          },
+          {
+            key: 'webUrl',
+            label: 'URL',
+          },
+          {
+            key: '@microsoft.graph.downloadUrl',
+            label: 'Download URL',
+          },
+        ],
+        perform: '$func$0$f$',
+        performGet: '$func$0$f$',
+        resource: 'file',
+        sample: {
+          '@microsoft.graph.downloadUrl': 'http://example.com',
+          _parent: '/Something',
+          _path: '/Something/Example.jpg',
+          createdDateTime: '2016-09-16T03:37:04.72Z',
+          id: '1',
+          lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+          name: 'Example.jpg',
+          webUrl: 'http://example.com',
+        },
+      },
+    },
+    folderSearch: {
+      display: {
+        description: 'Finds a folder by name.',
+        important: true,
+        label: 'Find Folder',
+      },
+      key: 'folderSearch',
+      noun: 'Folder',
+      operation: {
+        inputFields: [
+          {
+            dynamic: 'folderList._path.name',
+            helpText:
+              'Folder where to look for the folder. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+            key: 'folder',
+            label: 'Folder',
+            required: false,
+            type: 'string',
+          },
+          {
+            key: 'name',
+            required: true,
+            type: 'string',
+          },
+        ],
+        outputFields: [
+          {
+            key: 'id',
+            label: 'ID',
+          },
+          {
+            key: 'name',
+            label: 'Folder Name',
+          },
+          {
+            key: '_path',
+            label: 'Folder Path',
+          },
+          {
+            key: '_parent',
+            label: 'Parent Folder',
+          },
+          {
+            key: 'webUrl',
+            label: 'URL',
+          },
+        ],
+        perform: '$func$0$f$',
+        performGet: '$func$0$f$',
+        resource: 'folder',
+        sample: {
+          _parent: '/Something',
+          _path: '/Something/Example',
+          createdDateTime: '2016-09-16T03:37:04.72Z',
+          id: '1',
+          lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+          name: 'Example',
+          webUrl: 'http://example.com',
+        },
+      },
+    },
+  },
+  triggers: {
+    fileList: {
+      display: {
+        description: 'Triggers when a new file is added in a folder.',
+        important: true,
+        label: 'New File',
+      },
+      key: 'fileList',
+      noun: 'File',
+      operation: {
+        inputFields: [
+          {
+            dynamic: 'folderList._path.name',
+            helpText:
+              'Folder where to look for the file. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+            key: 'folder',
+            label: 'Folder',
+            required: false,
+            type: 'string',
+          },
+        ],
+        outputFields: [
+          {
+            key: 'id',
+            label: 'ID',
+          },
+          {
+            key: 'name',
+            label: 'File Name',
+          },
+          {
+            key: '_path',
+            label: 'File Path',
+          },
+          {
+            key: '_parent',
+            label: 'Folder',
+          },
+          {
+            key: 'webUrl',
+            label: 'URL',
+          },
+          {
+            key: '@microsoft.graph.downloadUrl',
+            label: 'Download URL',
+          },
+        ],
+        perform: '$func$0$f$',
+        resource: 'file',
+        sample: {
+          '@microsoft.graph.downloadUrl': 'http://example.com',
+          _parent: '/Something',
+          _path: '/Something/Example.jpg',
+          createdDateTime: '2016-09-16T03:37:04.72Z',
+          id: '1',
+          lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+          name: 'Example.jpg',
+          webUrl: 'http://example.com',
+        },
+        type: 'polling',
+      },
+    },
+    folderList: {
+      display: {
+        description: 'Triggers when a new folder is added.',
+        important: true,
+        label: 'New Folder',
+      },
+      key: 'folderList',
+      noun: 'Folder',
+      operation: {
+        inputFields: [
+          {
+            dynamic: 'folderList._path.name',
+            helpText:
+              'Folder where to look for the folder. Keep clicking the dropdown to go inside folders. Defaults to the top-level folder if left blank.',
+            key: 'folder',
+            label: 'Folder',
+            required: false,
+            type: 'string',
+          },
+        ],
+        outputFields: [
+          {
+            key: 'id',
+            label: 'ID',
+          },
+          {
+            key: 'name',
+            label: 'Folder Name',
+          },
+          {
+            key: '_path',
+            label: 'Folder Path',
+          },
+          {
+            key: '_parent',
+            label: 'Parent Folder',
+          },
+          {
+            key: 'webUrl',
+            label: 'URL',
+          },
+        ],
+        perform: '$func$2$f$',
+        resource: 'folder',
+        sample: {
+          _parent: '/Something',
+          _path: '/Something/Example',
+          createdDateTime: '2016-09-16T03:37:04.72Z',
+          id: '1',
+          lastModifiedDateTime: '2016-09-16T03:37:04.72Z',
+          name: 'Example',
+          webUrl: 'http://example.com',
+        },
+        type: 'polling',
+      },
+    },
+  },
+  version: '1.0.0',
 };

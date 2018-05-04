@@ -9,6 +9,7 @@ const FormEditor = props => {
     onUpdateLabel,
     onUpdateHelpText,
     onUpdateDropdown,
+    onAddField,
   } = props;
 
   const editorToRender = inputFields.map((field, index) => {
@@ -46,6 +47,7 @@ const FormEditor = props => {
             onUpdateDropdown(field.key, ev.target.checked);
           }}
         />
+        <button onClick={onAddField}>Add a field</button>
       </div>
     );
   });
