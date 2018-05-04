@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  height: 56px;
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__list-item {
+    margin: 8px;
+  }
+}

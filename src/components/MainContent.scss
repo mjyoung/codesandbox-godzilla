@@ -1,0 +1,14 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  &__header {
+    height: 110px;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+}

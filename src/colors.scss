@@ -1,0 +1,64 @@
+// Superhero colors
+
+$deepspace: #354147; // steel blue
+$lava: #ff4a00; // zapier orange
+$armor: #fd7622; // halloween orange
+$steel: #969ea2; // gray
+$heroine: #499df3; // bright blue
+$light-heroine: lighten($heroine, 35%); // pale blue
+$gamma: #13d0ab; // aqua green
+
+$adamantium: #dadfe2; // light gray
+$ramona: #fc1c74; // bright pink
+$wolverine: #ffc43e; // bright yellow
+$batmobile: #5f6c72; // dark gray
+$mystique: #6061ed; // bright purple
+$avatar: #46caef; // light blue
+$lantern: #62d493; // bright green
+
+$viper: #62d493; // success green
+$danger: #e52f00; // error red
+
+$sticky-note: #fff6e1; // pale yellow
+$border: #f1f4f5;
+
+$black: #000;
+$white: #fff;
+$storm: #f1f4f5;
+
+// Legacy colors
+
+$basefont: 13px;
+$baseline: 18px;
+
+$backgroundColor: #fff;
+
+$grayDark: lighten($black, 25%);
+$gray: lighten($black, 50%);
+$grayLight: lighten($black, 75%);
+$grayLighter: lighten($black, 90%);
+
+$blue: #499df3;
+$green: #46a546;
+$red: #e52f00;
+$yellow: #f4cd19;
+$pink: #c3325f;
+$purple: #7a43b6;
+
+$lightblue: #0378a9;
+$orange: #ff4a00;
+$lightorange: #fc6c30;
+$secondary: #4d4d4d;
+$lightgrey: #ccc;
+$darkgrey: #373737;
+$softblack: #222;
+$subtleblack: #ccc;
+$softgrey: #f5f5f5;
+$pillbase: #777;
+$success: #007500;
+$error: $red;
+$errorBackground: #ffeeeb;
+$borderShadow: #dedede;
+
+$flower-blue: lighten($lightblue, 10%);
+$gloomy: lighten($batmobile, 20%);

@@ -1,0 +1,9 @@
+html,
+body {
+  font-family: Open Sans;
+}
+
+.app {
+  height: calc(100vh - 56px); // subtract Header height
+  flex-direction: column;
+}
