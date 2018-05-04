@@ -3,9 +3,11 @@ import _ from 'lodash';
 
 import FormEditor from './FormEditor';
 import Preview from './Preview';
-import appDefinition from '../../mocks/app-definition';
+import appDefinition from '../../mocks/app-definition.js';
 
 import './MainContent.scss';
+
+const TRIGGER_KEY_TO_EDIT = 'fileList';
 
 class MainContent extends Component {
   constructor() {
@@ -17,7 +19,7 @@ class MainContent extends Component {
 
   addField = () => {
     const newState = _.cloneDeep(this.state.appDefinition);
-    newState.triggers[0].inputFields.push({
+    newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields.push({
       key: '',
       label: '',
       helpText: '',
@@ -30,7 +32,9 @@ class MainContent extends Component {
 
   updateKey = (index, val) => {
     const newState = _.cloneDeep(this.state.appDefinition);
-    newState.triggers[0].inputFields[index].key = val;
+    newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields[
+      index
+    ].key = val;
     this.setState({
       appDefinition: newState,
     });
@@ -39,10 +43,12 @@ class MainContent extends Component {
   updateLabel = (key, val) => {
     const newState = _.cloneDeep(this.state.appDefinition);
     const inputFieldIndexToUpdate = _.findIndex(
-      newState.triggers[0].inputFields,
+      newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields,
       inputField => inputField.key === key,
     );
-    newState.triggers[0].inputFields[inputFieldIndexToUpdate].label = val;
+    newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields[
+      inputFieldIndexToUpdate
+    ].label = val;
     this.setState({
       appDefinition: newState,
     });
@@ -51,10 +57,12 @@ class MainContent extends Component {
   updateHelpText = (key, val) => {
     const newState = _.cloneDeep(this.state.appDefinition);
     const inputFieldIndexToUpdate = _.findIndex(
-      newState.triggers[0].inputFields,
+      newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields,
       inputField => inputField.key === key,
     );
-    newState.triggers[0].inputFields[inputFieldIndexToUpdate].helpText = val;
+    newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields[
+      inputFieldIndexToUpdate
+    ].helpText = val;
     this.setState({
       appDefinition: newState,
     });
@@ -63,10 +71,12 @@ class MainContent extends Component {
   updateDropdown = (key, val) => {
     const newState = _.cloneDeep(this.state.appDefinition);
     const inputFieldIndexToUpdate = _.findIndex(
-      newState.triggers[0].inputFields,
+      newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields,
       inputField => inputField.key === key,
     );
-    newState.triggers[0].inputFields[inputFieldIndexToUpdate].dropdown = val;
+    newState.triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields[
+      inputFieldIndexToUpdate
+    ].dropdown = val;
     this.setState({
       appDefinition: newState,
     });
@@ -96,50 +106,22 @@ class MainContent extends Component {
 
   render() {
     const { state: { appDefinition: { triggers } } } = this;
+    const triggerInputFieldsToEdit =
+      triggers[TRIGGER_KEY_TO_EDIT].operation.inputFields;
     return (
       <div className="main">
         <div className="main__header">New Issue Trigger</div>
         <div className="main__wrapper">
           <FormEditor
-            inputFields={triggers[0].inputFields}
+            inputFields={triggerInputFieldsToEdit}
             onUpdateKey={this.updateKey}
             onUpdateLabel={this.updateLabel}
             onUpdateHelpText={this.updateHelpText}
             onUpdateDropdown={this.updateDropdown}
+            onAddField={this.addField}
           />
-          <Preview inputFields={triggers[0].inputFields} />
+          <Preview inputFields={triggerInputFieldsToEdit} />
         </div>
-      </div>
-    );
-  }
-
-  renderOld() {
-    const { state: { appDefinition: { triggers } } } = this;
-    return (
-      <div style={styles}>
-        <h1>Code Block Example</h1>
-        <AceEditor
-          mode="javascript"
-          theme="solarized_light"
-          value={codeBlock}
-          onChange={text => {
-            console.log('onChange', text);
-          }}
-          name="code-block"
-          editorProps={{ $blockScrolling: true }}
-        />
-
-        <h1>List of Triggers</h1>
-        {triggers.map(trigger => {
-          return (
-            <div key={trigger.key} style={{ margin: '20px' }}>
-              <h3>{trigger.label}</h3>
-            </div>
-          );
-        })}
-
-        <h1>Live Preview Example (New Recipe Trigger)</h1>
-        {this.renderTrigger(triggers[0])}
       </div>
     );
   }

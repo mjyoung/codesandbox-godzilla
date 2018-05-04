@@ -7,10 +7,10 @@ const Header = () => (
   <div className="header">
     <ul className="header__list">
       <li className="header__list-item">
-        <Link to="/">Home</Link>
+        <Link to="/">Live Preview</Link>
       </li>
       <li className="header__list-item">
-        <Link to="/sandbox">Sandbox</Link>
+        <Link to="/sandbox">Code Editor</Link>
       </li>
     </ul>
   </div>
